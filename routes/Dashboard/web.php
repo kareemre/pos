@@ -1,12 +1,23 @@
 <?php
 
-use App\Http\Controllers\dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
-
-Route::prefix('dashboard')->name('dashboard.')->group(function() {
-
-
-    Route::get('/index', [DashboardController::class, 'index'])->name('index');
+use App\Http\Controllers\dashboard\DashboardController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
-});
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    ], function(){ 
+        
+        Route::prefix('dashboard')->name('dashboard.')->group(function() {
+
+
+            Route::get('/index', [DashboardController::class, 'index'])->name('index');
+        
+        
+        });
+        
+    });
+
